@@ -11,16 +11,16 @@ function App() {
     api.get('repositories').then(response => {
       setRepositories(response.data);
     });
-  }, [repositories])
+  }, [])
 
   async function handleAddRepository() {
-    const repository = await api.post('repositories', {
+    const response = await api.post('repositories', {
       title: `Novo Repo ${Date.now()}`,
       url: 'www.teste.com',
       techs: ['1','2','3']
     });
 
-    setRepositories([...repositories, repository]);
+    setRepositories([...repositories, response.data]);
   }
 
   async function handleRemoveRepository(id) {
@@ -37,7 +37,7 @@ function App() {
 
         {
           repositories.map(repository => {
-            return (<li>
+            return (<li key={repository.id}>
               {repository.title}
               <button onClick={() => handleRemoveRepository(repository.id)}>
                 Remover
